@@ -1,4 +1,3 @@
-import logging
 from dataclasses import dataclass
 from abc import ABC, abstractmethod
 from schema import Schema
@@ -102,6 +101,7 @@ class Compose(Transform):
         for t in self.transforms:
             d[t.name] = t.to_dict()
         return d
+
 
 @dataclass
 class NumpyTransform(Transform, ABC):
