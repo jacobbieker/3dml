@@ -3,6 +3,7 @@ from abc import ABC, abstractmethod
 from schema import Schema
 from typing import Dict, Any, Type, List, Sequence, Optional, Union
 import numpy as np
+
 """
 
 Methods for loadings the various open 3D AV datasets into a common format for use throughout this repo
@@ -11,9 +12,13 @@ This is setup for the Audi a2d2, Waymo Open Dataset, NuScenes, Argoverse, Apollo
 
 Attempts to load the different modules for loading in the datasets, but should just pass if the setup doesn't exist
 
+The loader should get the data from the native format for that loader, transform it to a common label/ format, then 
+return that to the caller. 
+
 """
 
 from abc import ABC
+
 
 class Loader(ABC):
     point_cloud: bool
@@ -34,20 +39,16 @@ class Loader(ABC):
         return type(self).__name__
 
     def __call__(self, scene_id: Any, frame_numbers: Union[int, List[int]]):
-        return self.get(scene_id, frame_numbers)
+        return self.transform(self.get(scene_id, frame_numbers))
 
     @abstractmethod
     def get(self, scene_id: Any, frame_numbers: Union[int, List[int]]):
         """Gets an example, or set of examples """
         raise NotImplementedError
 
-    @classmethod
     @abstractmethod
-    def from_dict(cls, d: Dict[str, Any]):
-        raise NotImplementedError
-
-    @abstractmethod
-    def to_dict(self) -> Dict[str, Any]:
+    def transform(self, items: Any) -> Any:
+        """ Convert the gathered annotations/frames to the common format"""
         raise NotImplementedError
 
 
@@ -88,6 +89,6 @@ class WaymoLoader(Loader):
 
 class BoxyLoader(Loader):
     """ Bosch Boxy Dataset is only camera images and 2D bounding boxes with 5MP images, and ~2million vehicles"""
-    
+
     def get(self, scene_id: Any, frame_numbers: Union[int, List[int]]):
         return NotImplementedError
