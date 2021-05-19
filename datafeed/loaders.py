@@ -84,3 +84,10 @@ class WaymoLoader(Loader):
 
     def get(self, scene_id: Any, frame_numbers: Union[int, List[int]]):
         return NotImplementedError
+
+
+class BoxyLoader(Loader):
+    """ Bosch Boxy Dataset is only camera images and 2D bounding boxes with 5MP images, and ~2million vehicles"""
+    
+    def get(self, scene_id: Any, frame_numbers: Union[int, List[int]]):
+        return NotImplementedError
