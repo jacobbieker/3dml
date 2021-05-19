@@ -3,6 +3,7 @@ from abc import ABC, abstractmethod
 from schema import Schema
 from typing import Dict, Any, Type, List, Sequence, Optional, Union
 import numpy as np
+import json
 
 """
 
@@ -39,7 +40,7 @@ class Loader(ABC):
         return type(self).__name__
 
     def __call__(self, scene_id: Any, frame_numbers: Union[int, List[int]]):
-        return self.transform(self.get(scene_id, frame_numbers))
+        return self.transform(self.get(scene_id, frame_numbers)
 
     @abstractmethod
     def get(self, scene_id: Any, frame_numbers: Union[int, List[int]]):
@@ -65,7 +66,13 @@ class NuScenesLoader(Loader):
 class A2D2Loader(Loader):
     """A2D2 has lidar segmentation of cameras, and bounding boxes"""
 
+    def __init__(self, config: Dict[str, Any]):
+        self.super.__init__(config)
+        # Specific configuration file for A2D2
+        self.config = json.load(open(config.get("a2d2_config", ""), 'r'))
+
     def get(self, scene_id: Any, frame_numbers: Union[int, List[int]]):
+
         return NotImplementedError
 
     def transform(self, items: Any) -> Any:
