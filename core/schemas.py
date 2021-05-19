@@ -39,5 +39,3 @@ SEGMENTATION_SCHEMA = Schema({
     "coordinate_system": lambda x: x in ["ego", "world"]
 })
 
-
-
