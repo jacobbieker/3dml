@@ -58,11 +58,17 @@ class NuScenesLoader(Loader):
     def get(self, scene_id: Any, frame_numbers: Union[int, List[int]]):
         return NotImplementedError
 
+    def transform(self, items: Any) -> Any:
+        return NotImplementedError
+
 
 class A2D2Loader(Loader):
     """A2D2 has lidar segmentation of cameras, and bounding boxes"""
 
     def get(self, scene_id: Any, frame_numbers: Union[int, List[int]]):
+        return NotImplementedError
+
+    def transform(self, items: Any) -> Any:
         return NotImplementedError
 
 
@@ -72,11 +78,17 @@ class ApolloScapeLoader(Loader):
     def get(self, scene_id: Any, frame_numbers: Union[int, List[int]]):
         return NotImplementedError
 
+    def transform(self, items: Any) -> Any:
+        return NotImplementedError
+
 
 class ArgoverseLoader(Loader):
     """"The Argoverse data includes lidar, images, and bounding boxes, as well as high quality maps"""
 
     def get(self, scene_id: Any, frame_numbers: Union[int, List[int]]):
+        return NotImplementedError
+
+    def transform(self, items: Any) -> Any:
         return NotImplementedError
 
 
@@ -86,9 +98,15 @@ class WaymoLoader(Loader):
     def get(self, scene_id: Any, frame_numbers: Union[int, List[int]]):
         return NotImplementedError
 
+    def transform(self, items: Any) -> Any:
+        return NotImplementedError
+
 
 class BoxyLoader(Loader):
     """ Bosch Boxy Dataset is only camera images and 2D bounding boxes with 5MP images, and ~2million vehicles"""
 
     def get(self, scene_id: Any, frame_numbers: Union[int, List[int]]):
+        return NotImplementedError
+
+    def transform(self, items: Any) -> Any:
         return NotImplementedError
