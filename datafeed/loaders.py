@@ -27,6 +27,8 @@ class Loader(ABC):
     bounding_boxes: bool
     cameras: List[int]
     bus: bool
+    include_annotations: bool
+    include_reflectance: bool
 
     def __init__(self, config: Dict[str, Any]):
         self.point_cloud = config.get("include_points", False)
@@ -34,6 +36,8 @@ class Loader(ABC):
         self.segmentation = config.get("include_segmentation", False)
         self.bounding_boxes = config.get("include_bboxes", False)
         self.bux = config.get("include_bus", False)
+        self.include_annotations = config.get("include_annotations", False)
+        self.include_reflectance = config.get("include_reflectance", False)
 
     @property
     def name(self) -> str:
