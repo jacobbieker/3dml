@@ -28,7 +28,7 @@ class ArgoVerseScene(Scene):
         for frame_no, full_frame_no in self.frame_no_to_full_frame_no.items():
             cuboids = [{"xyz": obj.translation, "wlh": np.array([obj.width, obj.length, obj.height]),
                         "label": obj.label_class, "attributes": {"occlusion": obj.occlusion},
-                        "yaw": obj.quaternion} for  obj in self.frame_data[full_frame_no]["objects"]]
+                        "yaw": obj.quaternion} for obj in self.frame_data[full_frame_no]["objects"]]
             self.frame_data[full_frame_no]["cuboids"] = cuboids
 
     def stack_frames(self, frame_numbers: List[int]):
@@ -65,7 +65,7 @@ class ArgoVerseScene(Scene):
             frame_imgs.append(cam_imgs)
             frame_pointcloud.append(point_cloud)
             frame_objects.append(gt_objects)
-            frame_data[frame_no] = {"images": np.asarray(cam_imgs), "points": point_cloud, "objects": gt_objects}
+            frame_data[frame_no] = {"images": np.asarray(cam_imgs), "points": point_cloud, "objects": gt_objects, "ego": self.loader.get_pose(frame_no)}
             frame_no_to_full_frame_no[i] = frame_no
             full_frame_no_to_frame_no[frame_no] = i
 
