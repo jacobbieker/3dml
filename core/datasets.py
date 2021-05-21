@@ -69,11 +69,16 @@ class ArgoDataset(thd.IterableDataset):
         self.config = config
         self.root_dir = config.get("root_dir", "")
         self.loader = ArgoverseTrackingLoader(self.root_dir)
+        self.log_list = self.loader.log_list
         self.type = config.get("task_type", "annotation")
         self.classes = config.get("classes", ["vehicle"])
 
     def __iter__(self):
-        pass
+        while True:
+            idx = np.random.randint(0, len(self.log_list))
+            scene = self.loader.get(self.log_list[idx])
+
+            yield scene
 
 
 class A2D2Dataset(thd.IterableDataset):

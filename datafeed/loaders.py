@@ -35,7 +35,7 @@ class Loader(ABC):
         self.cameras = config.get("include_cameras", [])
         self.segmentation = config.get("include_segmentation", False)
         self.bounding_boxes = config.get("include_bboxes", False)
-        self.bux = config.get("include_bus", False)
+        self.bus = config.get("include_bus", False)
         self.include_annotations = config.get("include_annotations", False)
         self.include_reflectance = config.get("include_reflectance", False)
 
