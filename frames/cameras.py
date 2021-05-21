@@ -58,3 +58,15 @@ class A2D2Camera(Camera):
                 return points
         else:
             return points
+
+
+@dataclass
+class NuScenesCamera(Camera):
+    def load_image(self, config: Dict[str, Any]):
+        pass
+
+    def load_metadata(self, config: Dict[str, Any]):
+        pass
+
+    def project(self, points: np.ndarray):
+        pass

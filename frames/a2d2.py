@@ -153,31 +153,6 @@ def extract_image_file_name_from_lidar_file_name(file_name_lidar):
     return file_name_image
 
 
-def undistort_image(image, cam_name):
-    if cam_name in ['front_left', 'front_center', \
-                    'front_right', 'side_left', \
-                    'side_right', 'rear_center']:
-        # get parameters from config file
-        intr_mat_undist = \
-            np.asarray(config['cameras'][cam_name]['CamMatrix'])
-        intr_mat_dist = \
-            np.asarray(config['cameras'][cam_name]['CamMatrixOriginal'])
-        dist_parms = \
-            np.asarray(config['cameras'][cam_name]['Distortion'])
-        lens = config['cameras'][cam_name]['Lens']
-
-        if (lens == 'Fisheye'):
-            return cv2.fisheye.undistortImage(image, intr_mat_dist, \
-                                              D=dist_parms, Knew=intr_mat_undist)
-        elif (lens == 'Telecam'):
-            return cv2.undistort(image, intr_mat_dist, \
-                                 distCoeffs=dist_parms, newCameraMatrix=intr_mat_undist)
-        else:
-            return image
-    else:
-        return image
-
-
 def hsv_to_rgb(h, s, v):
     if s == 0.0:
         return v, v, v
@@ -321,3 +296,4 @@ def get_points(bbox):
         points = points + bbox['center']
 
     return points
+
