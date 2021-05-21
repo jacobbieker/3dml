@@ -21,7 +21,15 @@ class ArgoVerseScene(Scene):
                 self.cameras[i] = cam
 
     def convert(self):
-        pass
+        if not self.frame_data:
+            self.load_data()
+
+        # The conversion for Argo is converting the bounding boxes to the common format
+        for frame_no, full_frame_no in self.frame_no_to_full_frame_no.items():
+            cuboids = [{"xyz": obj.translation, "wlh": np.array([obj.width, obj.length, obj.height]),
+                        "label": obj.label_class, "attributes": {"occlusion": obj.occlusion},
+                        "yaw": obj.quaternion} for  obj in self.frame_data[full_frame_no]["objects"]]
+            self.frame_data[full_frame_no]["cuboids"] = cuboids
 
     def stack_frames(self, frame_numbers: List[int]):
         pass
@@ -35,13 +43,15 @@ class ArgoVerseScene(Scene):
     def load_metadata(self):
         pass
 
-    def load_data(self, frame_numbers: Union[List[int], int]):
+    def load_data(self, frame_numbers: Optional[Union[List[int], int]] = None):
         frame_imgs = []
         frame_pointcloud = []
         frame_objects = []
         frame_data = {}
         frame_no_to_full_frame_no = {}
         full_frame_no_to_frame_no = {}
+        if frame_numbers is None:
+            frame_numbers = list(range(self.num_frames))
         if isinstance(frame_numbers, int):
             frame_numbers = [frame_numbers]
 
