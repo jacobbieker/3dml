@@ -2,7 +2,9 @@ import argoverse
 from argoverse.utils.camera_stats import RING_CAMERA_LIST, CAMERA_LIST
 from argoverse.sensor_dataset_config import ArgoverseConfig
 from argoverse.utils.se3 import SE3
-from argoverse.utils.calibration import CameraConfig, get_calibration_config, get_camera_extrinsic_matrix, get_camera_intrinsic_matrix, get_image_dims_for_camera, point_cloud_to_homogeneous, project_lidar_to_img_motion_compensated, project_lidar_to_undistorted_img, project_lidar_to_img
+from argoverse.utils.calibration import CameraConfig, get_calibration_config, get_camera_extrinsic_matrix,\
+    get_camera_intrinsic_matrix, get_image_dims_for_camera, point_cloud_to_homogeneous,\
+    project_lidar_to_img_motion_compensated, project_lidar_to_undistorted_img, project_lidar_to_img
 from typing import Dict, List, Any, Optional, Union
 from .scene import Scene
 import numpy as np
@@ -24,7 +26,7 @@ class ArgoVerseScene(Scene):
         if not self.frame_data:
             self.load_data()
 
-        # The conversion for Argo is converting the bounding boxes to the common format
+        # The conversion for Argo is converting the bounding boxes to the common format, it doesn't have segmentation
         for frame_no, full_frame_no in self.frame_no_to_full_frame_no.items():
             cuboids = [{"xyz": obj.translation, "wlh": np.array([obj.width, obj.length, obj.height]),
                         "label": obj.label_class, "attributes": {"occlusion": obj.occlusion},
@@ -45,7 +47,7 @@ class ArgoVerseScene(Scene):
 
     def load_data(self, frame_numbers: Optional[Union[List[int], int]] = None):
         frame_imgs = []
-        frame_pointcloud = []
+        frame_points = []
         frame_objects = []
         frame_data = {}
         frame_no_to_full_frame_no = {}
@@ -63,7 +65,7 @@ class ArgoVerseScene(Scene):
             gt_objects = self.loader.get_label_object(frame_no)
 
             frame_imgs.append(cam_imgs)
-            frame_pointcloud.append(point_cloud)
+            frame_points.append(point_cloud)
             frame_objects.append(gt_objects)
             frame_data[frame_no] = {"images": np.asarray(cam_imgs), "points": point_cloud, "objects": gt_objects, "ego": self.loader.get_pose(frame_no)}
             frame_no_to_full_frame_no[i] = frame_no
